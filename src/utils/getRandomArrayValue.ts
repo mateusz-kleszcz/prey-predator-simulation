@@ -1,0 +1,1 @@
+export const getRandomArrayValue = <T>(array: T[]) => array[Math.floor(Math.random() * array.length)];
