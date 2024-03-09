@@ -34,6 +34,8 @@ export const getNextEpoch = (
   energyPredatorFromEating = 80,
   chanceOfReproductionPrey = 0.15,
   chanceOfReproductionPredator = 0.8,
+  preyReproductionCooldown = 4,
+  predatorReproductionCooldown = 4,
 ) => {
   const height = board.length;
   const width = board[0].length;
@@ -65,8 +67,8 @@ export const getNextEpoch = (
       continue;
     }
     if (nextCellObject.type === CellType.Plant) {
-      preyObject.energy += energyPreyFromEating;
-      board[newY][newX] = preyObject;
+      newPreyObject.energy += energyPreyFromEating;
+      board[newY][newX] = newPreyObject;
       board[y][x] = getEmptyCell();
       newPreys.push([newX, newY]);
       continue;
@@ -75,19 +77,21 @@ export const getNextEpoch = (
       newPreys.push([x, y]);
       const newPreyCords = isEmptySpaceAround(board, x, y, newX, newY)
       if (
-        preyObject.reproductionCooldown !== 0 ||
+        newPreyObject.reproductionCooldown !== 0 ||
         nextCellObject.reproductionCooldown !== 0 ||
-        preyObject.energy < energyPreyLostReproducting ||
+        newPreyObject.energy < energyPreyLostReproducting ||
         nextCellObject.energy < energyPreyLostReproducting ||
         Math.random() > chanceOfReproductionPrey ||
         !newPreyCords
       ) {
         continue;
       }
-      preyObject.energy -= energyPreyLostReproducting;
+      newPreyObject.energy -= energyPreyLostReproducting;
       nextCellObject.energy -= energyPreyLostReproducting;
+      newPreyObject.reproductionCooldown = preyReproductionCooldown;
+      nextCellObject.reproductionCooldown = preyReproductionCooldown;
 
-      const newPreyEscape = (preyObject.escape + nextCellObject.escape) / 2 + 0.1;
+      const newPreyEscape = (newPreyObject.escape + nextCellObject.escape) / 2 + 0.1;
       const [newPreyX, newPreyY] = newPreyCords;
       board[newPreyY][newPreyX] = getPrey(newPreyEscape);
       newPreys.push([newPreyX, newPreyY]);
@@ -124,25 +128,27 @@ export const getNextEpoch = (
       newPredators.push([x, y]);
       const newPredatorsCords = isEmptySpaceAround(board, x, y, newX, newY)
       if (
-        predatorObject.reproductionCooldown !== 0 ||
+        newPredatorObject.reproductionCooldown !== 0 ||
         nextCellObject.reproductionCooldown !== 0 ||
-        predatorObject.energy < energyPredatorLostReproducting ||
+        newPredatorObject.energy < energyPredatorLostReproducting ||
         nextCellObject.energy < energyPredatorLostReproducting ||
         Math.random() > chanceOfReproductionPredator ||
         !newPredatorsCords
       ) {
         continue;
       }
-      predatorObject.energy -= energyPredatorLostReproducting;
+      newPredatorObject.energy -= energyPredatorLostReproducting;
       nextCellObject.energy -= energyPredatorLostReproducting;
+      newPredatorObject.reproductionCooldown = predatorReproductionCooldown;
+      nextCellObject.reproductionCooldown = predatorReproductionCooldown;
 
-      const newPredatorEffectivenes = (predatorObject.effectiveness + nextCellObject.effectiveness) / 2 + 0.01;
+      const newPredatorEffectivenes = (newPredatorObject.effectiveness + nextCellObject.effectiveness) / 2 + 0.01;
       const [newPredatorX, newPredatorY] = newPredatorsCords;
       board[newPredatorY][newPredatorX] = getPredator(newPredatorEffectivenes);
       newPredators.push([newPredatorX, newPredatorY]);
     }
     if (nextCellObject.type === CellType.Prey) {
-      if (Math.random() > predatorObject.effectiveness - nextCellObject.escape) {
+      if (Math.random() > newPredatorObject.effectiveness - nextCellObject.escape) {
         newPredators.push([x, y]);
         continue;
       }
