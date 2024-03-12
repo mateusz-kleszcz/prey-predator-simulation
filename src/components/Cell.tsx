@@ -1,6 +1,6 @@
-import { Box } from "@chakra-ui/react"
-import { FC, useMemo } from "react"
-import { CellType } from "../utils/types"
+import { Box } from "@chakra-ui/react";
+import { FC, useMemo } from "react";
+import { CellType } from "../utils/types";
 
 type CellProps = {
   type: CellType;
@@ -11,17 +11,27 @@ export const Cell: FC<CellProps> = ({ type, energy }) => {
   const color = useMemo(() => {
     switch (type) {
       case CellType.Empty:
-        return 'white';
+        return "white";
       case CellType.Plant:
-        return 'yellow';
+        return "yellow";
       case CellType.Predator:
-        return 'red';
+        return "red";
       case CellType.Prey:
-        return 'green';
+        return "green";
     }
   }, [type]);
 
   return (
-    <Box boxSize="30px" border="1px solid black" bg={color}>{energy}</Box>
-  )
-}
+    <Box
+      display="flex"
+      flex={1}
+      aspectRatio={1}
+      border="1px solid black"
+      justifyContent="center"
+      alignItems="center"
+      bg={color}
+    >
+      {energy}
+    </Box>
+  );
+};
