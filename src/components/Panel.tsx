@@ -22,18 +22,28 @@ export const Panel: FC<PanelProps> = ({ onNextEpoch }) => {
         }, 1000)
       );
     } else {
-      if (intervalID != null) clearInterval(intervalID);
+      if (intervalID != null) {
+        clearInterval(intervalID);
+      }
       setIntervalID(null);
     }
   }, [simulate]);
 
   return (
-    <Flex flex={3} flexDirection="column" padding={3} gap={3}>
+    <Flex flex={3} flexDirection="column" padding={3} gap={5}>
+      <Flex gap={5}>
+        <Button
+          colorScheme={simulate ? "red" : "teal"}
+          flex={1}
+          onClick={simulateClick}
+        >
+          Simulate
+        </Button>
+        <Button colorScheme="cyan" flex={1} onClick={onNextEpoch}>
+          Next
+        </Button>
+      </Flex>
       <Parameters />
-      <Button onClick={simulateClick}>Simulate</Button>
-      <Button onClick={onNextEpoch} disabled={simulate}>
-        Next
-      </Button>
     </Flex>
   );
 };

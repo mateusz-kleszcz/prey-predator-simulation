@@ -19,9 +19,9 @@ export const SingleParameter: FC<SingleParameterProps> = ({
   index,
 }) => {
   return (
-    <Flex flexDirection="column">
+    <Flex flexDirection="column" boxShadow="5px 5px 10px" borderRadius="5px">
       <Flex justifyContent="space-between">
-        <Flex flex={3}>{parameter.name}</Flex>
+        <Flex flex={4}>{parameter.name}</Flex>
         <Flex flex={2}>Actual Value: {parameter.value}</Flex>
       </Flex>
       <Flex>

@@ -1,4 +1,4 @@
-import { Box } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
 import { FC, useMemo } from "react";
 import { CellType } from "../utils/types";
 
@@ -22,16 +22,17 @@ export const Cell: FC<CellProps> = ({ type, energy }) => {
   }, [type]);
 
   return (
-    <Box
-      display="flex"
+    <Flex
       flex={1}
       aspectRatio={1}
       border="1px solid black"
       justifyContent="center"
       alignItems="center"
+      boxSizing="border-box"
+      overflow="hidden"
       bg={color}
     >
       {energy}
-    </Box>
+    </Flex>
   );
 };
