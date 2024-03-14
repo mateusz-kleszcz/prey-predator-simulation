@@ -1,14 +1,16 @@
 import { FC, useEffect, useState } from "react";
 import { Button, Flex } from "@chakra-ui/react";
 import { Parameters } from "./Parameters";
+import { dispatch, useStoreState } from "../store/simulationStore";
 
-type PanelProps = {
+type SimulationPanelProps = {
   onNextEpoch: () => void;
 };
 
-export const Panel: FC<PanelProps> = ({ onNextEpoch }) => {
+export const SimulationPanel: FC<SimulationPanelProps> = ({ onNextEpoch }) => {
   const [simulate, setSimulate] = useState(false);
   const [intervalID, setIntervalID] = useState<null | NodeJS.Timer>(null);
+  const parameters = useStoreState("parameters");
 
   const simulateClick = () => {
     setSimulate(!simulate);
@@ -43,7 +45,7 @@ export const Panel: FC<PanelProps> = ({ onNextEpoch }) => {
           Next
         </Button>
       </Flex>
-      <Parameters />
+      <Parameters parameters={parameters} dispatch={dispatch} />
     </Flex>
   );
 };

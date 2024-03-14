@@ -1,15 +1,30 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { generateBoard } from "../utils/generateBoard";
 import { getNextEpoch } from "../utils/getNextEpoch";
-import { useStoreState } from "../store/store";
+import { useStoreState } from "../store/simulationStore";
 
-const [initialBoard, initialPreys, initialPredators] = generateBoard();
-
-export const useInitSimulation = () => {
-  const [board, setBoard] = useState(initialBoard);
-  const [preys, setPreys] = useState(initialPreys);
-  const [predators, setPredators] = useState(initialPredators);
+export const useInitSimulation = (
+  width: number,
+  height: number,
+  startingNumberOfPreys: number,
+  startingNumberOfPredators: number
+) => {
+  const [board, setBoard] = useState<any[][]>([]);
+  const [preys, setPreys] = useState<any[][]>([]);
+  const [predators, setPredators] = useState<any[][]>([]);
   const parameters = useStoreState("parameters");
+
+  useEffect(() => {
+    const [initialBoard, initialPreys, initialPredators] = generateBoard(
+      width,
+      height,
+      startingNumberOfPreys,
+      startingNumberOfPredators
+    );
+    setBoard(initialBoard);
+    setPreys(initialPreys);
+    setPredators(initialPredators);
+  }, [width, height, startingNumberOfPreys, startingNumberOfPredators]);
 
   const onNextEpoch = useCallback(() => {
     const [newBoard, newPreys, newPredators] = getNextEpoch(

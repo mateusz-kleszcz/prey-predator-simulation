@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { Dispatch, FC } from "react";
 import {
   Flex,
   Slider,
@@ -6,17 +6,22 @@ import {
   SliderThumb,
   SliderTrack,
 } from "@chakra-ui/react";
-import { dispatch } from "../store/store";
 import { Parameter } from "../utils/types";
 
 type SingleParameterProps = {
   parameter: Parameter;
   index: number;
+  dispatch: (action: { type: string; index: number; value: number }) => {
+    type: string;
+    index: number;
+    value: number;
+  };
 };
 
 export const SingleParameter: FC<SingleParameterProps> = ({
   parameter,
   index,
+  dispatch,
 }) => {
   return (
     <Flex flexDirection="column" boxShadow="5px 5px 10px" borderRadius="5px">

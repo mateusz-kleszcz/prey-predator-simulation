@@ -1,3 +1,4 @@
+import { dispatch } from "../store/chartDataStore";
 import { getEmptyCell, getPredator, getPrey } from "./constructors";
 import { BoardType } from "./generateBoard";
 import { getNextCell, getRandomNextCell } from "./getNextCell";
@@ -177,6 +178,11 @@ export const getNextEpoch = (
       newPreys.splice(eatenPreyIndex, 1);
     }
   }
+
+  dispatch({
+    type: "add",
+    value: { predators: newPredators.length, preys: newPreys.length },
+  });
 
   return [board, newPreys, newPredators];
 };

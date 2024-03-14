@@ -1,6 +1,6 @@
 import { createStore } from "react-hooks-global-state";
 import { Parameter } from "../utils/types";
-import { parameters } from "./mocks/parameters";
+import { parameters } from "./mocks/simulationParameters";
 
 const reducer = (
   state: { parameters: Parameter[] },

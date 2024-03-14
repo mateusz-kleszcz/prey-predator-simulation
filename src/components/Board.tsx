@@ -10,7 +10,7 @@ type BoardProps = {
 
 export const Board: FC<BoardProps> = ({ board }) => {
   return (
-    <Flex flex={7} flexDirection="column" padding={3}>
+    <Flex flex={3} flexDirection="column" padding={3}>
       {board.map((rows, i) => (
         <Flex key={`row-${i}`}>
           {rows.map((cell, j) =>

@@ -1,11 +1,19 @@
 import { FC } from "react";
 import { SingleParameter } from "./SingleParameter";
-import { useStoreState } from "../store/store";
+import { useStoreState } from "../store/simulationStore";
 import { Flex } from "@chakra-ui/react";
+import { Parameter } from "../utils/types";
 
-export const Parameters: FC = () => {
-  const parameters = useStoreState("parameters");
+type ParametersProps = {
+  parameters: Parameter[];
+  dispatch: (action: { type: string; index: number; value: number }) => {
+    type: string;
+    index: number;
+    value: number;
+  };
+};
 
+export const Parameters: FC<ParametersProps> = ({ parameters, dispatch }) => {
   return (
     <Flex flexDirection="column" gap={6}>
       {parameters.map((element, index) => {
@@ -14,6 +22,7 @@ export const Parameters: FC = () => {
             key={`param${index}`}
             parameter={element}
             index={index}
+            dispatch={dispatch}
           />
         );
       })}
