@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 import { Button, Flex } from "@chakra-ui/react";
 import { Parameters } from "./Parameters";
 import { dispatch, useStoreState } from "../store/simulationStore";
@@ -9,7 +9,7 @@ type SimulationPanelProps = {
 
 export const SimulationPanel: FC<SimulationPanelProps> = ({ onNextEpoch }) => {
   const [simulate, setSimulate] = useState(false);
-  const [intervalID, setIntervalID] = useState<null | NodeJS.Timer>(null);
+  const intervalRef = useRef<null | NodeJS.Timer>(null);
   const parameters = useStoreState("parameters");
 
   const simulateClick = () => {
@@ -18,18 +18,18 @@ export const SimulationPanel: FC<SimulationPanelProps> = ({ onNextEpoch }) => {
 
   useEffect(() => {
     if (simulate) {
-      setIntervalID(
-        setInterval(() => {
-          onNextEpoch();
-        }, 1000)
-      );
+      intervalRef.current = setInterval(() => {
+        onNextEpoch();
+      }, 1000)
     } else {
-      if (intervalID != null) {
-        clearInterval(intervalID);
+      if (intervalRef.current !== null) {
+        clearInterval(intervalRef.current);
       }
-      setIntervalID(null);
     }
-  }, [simulate]);
+    return () => {
+      intervalRef.current && clearInterval(intervalRef.current)
+    }
+  }, [onNextEpoch, simulate]);
 
   return (
     <Flex flex={3} flexDirection="column" padding={3} gap={5}>

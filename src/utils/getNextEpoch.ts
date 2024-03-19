@@ -14,11 +14,13 @@ const isEmptySpaceAround = (
   x2: number,
   y2: number
 ) => {
+  const width = board[0].length
+  const height = board.length
   const neighbours1 = VECTOR.map((i) =>
-    VECTOR.map((j) => getNextCell(x1, y1, i, j))
+    VECTOR.map((j) => getNextCell(x1, y1, i, j, width, height))
   ).flat();
   const neighbours2 = VECTOR.map((i) =>
-    VECTOR.map((j) => getNextCell(x2, y2, i, j))
+    VECTOR.map((j) => getNextCell(x2, y2, i, j, width, height))
   ).flat();
 
   const emptyNeighbours = [...neighbours1, ...neighbours2].filter(
@@ -157,7 +159,7 @@ export const getNextEpoch = (
         (newPredatorObject.effectiveness + nextCellObject.effectiveness) / 2 +
         0.01;
       const [newPredatorX, newPredatorY] = newPredatorsCords;
-      board[newPredatorY][newPredatorX] = getPredator(newPredatorEffectivenes);
+      board[newPredatorY][newPredatorX] = getPredator(newPredatorEffectivenes, 30);
       newPredators.push([newPredatorX, newPredatorY]);
     }
     if (nextCellObject.type === CellType.Prey) {
