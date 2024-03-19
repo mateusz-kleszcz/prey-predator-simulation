@@ -1,20 +1,54 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { generateBoard } from "../utils/generateBoard";
 import { getNextEpoch } from "../utils/getNextEpoch";
+import { useStoreState } from "../store/simulationStore";
 
-const [initialBoard, initialPreys, initialPredators] = generateBoard();
+export const useInitSimulation = (
+  width: number,
+  height: number,
+  startingNumberOfPreys: number,
+  startingNumberOfPredators: number
+) => {
+  const [board, setBoard] = useState<any[][]>([]);
+  const [preys, setPreys] = useState<any[][]>([]);
+  const [predators, setPredators] = useState<any[][]>([]);
+  const parameters = useStoreState("parameters");
 
-export const useInitSimulation = () => {
-  const [board, setBoard] = useState(initialBoard);
-  const [preys, setPreys] = useState(initialPreys);
-  const [predators, setPredators] = useState(initialPredators);
+  useEffect(() => {
+    const [initialBoard, initialPreys, initialPredators] = generateBoard(
+      width,
+      height,
+      startingNumberOfPreys,
+      startingNumberOfPredators
+    );
+    setBoard(initialBoard);
+    setPreys(initialPreys);
+    setPredators(initialPredators);
+  }, [width, height, startingNumberOfPreys, startingNumberOfPredators]);
 
   const onNextEpoch = useCallback(() => {
-    const [newBoard, newPreys, newPredators] = getNextEpoch([...board], [...preys], [...predators]);
-    setBoard([...newBoard])
-    setPreys([...newPreys])
-    setPredators([...newPredators])
-  }, [board, predators, preys])
+    const [newBoard, newPreys, newPredators] = getNextEpoch(
+      [...board],
+      [...preys],
+      [...predators],
+      parameters[0].value,
+      parameters[1].value,
+      parameters[2].value,
+      parameters[3].value,
+      parameters[4].value,
+      parameters[5].value,
+      parameters[6].value,
+      parameters[7].value,
+      parameters[8].value,
+      parameters[9].value
+    );
+    setBoard([...newBoard]);
+    setPreys([...newPreys]);
+    setPredators([...newPredators]);
+  }, [board, predators, preys, parameters]);
 
-  return { board, onNextEpoch }
-}
+  return {
+    board,
+    onNextEpoch,
+  };
+};
