@@ -1,4 +1,4 @@
-import { Dispatch, FC } from "react";
+import { FC } from "react";
 import {
   Flex,
   Slider,
@@ -11,6 +11,7 @@ import { Parameter } from "../utils/types";
 type SingleParameterProps = {
   parameter: Parameter;
   index: number;
+  disabled: boolean;
   dispatch: (action: { type: string; index: number; value: number }) => {
     type: string;
     index: number;
@@ -21,6 +22,7 @@ type SingleParameterProps = {
 export const SingleParameter: FC<SingleParameterProps> = ({
   parameter,
   index,
+  disabled,
   dispatch,
 }) => {
   return (
@@ -35,6 +37,7 @@ export const SingleParameter: FC<SingleParameterProps> = ({
         </Flex>
         <Flex flex={8}>
           <Slider
+            isDisabled={disabled}
             min={parameter.min}
             max={parameter.max}
             step={parameter.step}

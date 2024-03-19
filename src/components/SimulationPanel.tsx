@@ -20,15 +20,15 @@ export const SimulationPanel: FC<SimulationPanelProps> = ({ onNextEpoch }) => {
     if (simulate) {
       intervalRef.current = setInterval(() => {
         onNextEpoch();
-      }, 1000)
+      }, 100);
     } else {
       if (intervalRef.current !== null) {
         clearInterval(intervalRef.current);
       }
     }
     return () => {
-      intervalRef.current && clearInterval(intervalRef.current)
-    }
+      intervalRef.current && clearInterval(intervalRef.current);
+    };
   }, [onNextEpoch, simulate]);
 
   return (
@@ -45,7 +45,11 @@ export const SimulationPanel: FC<SimulationPanelProps> = ({ onNextEpoch }) => {
           Next
         </Button>
       </Flex>
-      <Parameters parameters={parameters} dispatch={dispatch} />
+      <Parameters
+        parameters={parameters}
+        disabled={simulate}
+        dispatch={dispatch}
+      />
     </Flex>
   );
 };

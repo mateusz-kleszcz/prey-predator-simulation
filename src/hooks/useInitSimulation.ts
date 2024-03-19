@@ -7,7 +7,8 @@ export const useInitSimulation = (
   width: number,
   height: number,
   startingNumberOfPreys: number,
-  startingNumberOfPredators: number
+  startingNumberOfPredators: number,
+  startingNumberOfPlantsRemaining: number
 ) => {
   const [board, setBoard] = useState<any[][]>([]);
   const [preys, setPreys] = useState<any[][]>([]);
@@ -19,12 +20,19 @@ export const useInitSimulation = (
       width,
       height,
       startingNumberOfPreys,
-      startingNumberOfPredators
+      startingNumberOfPredators,
+      startingNumberOfPlantsRemaining
     );
     setBoard(initialBoard);
     setPreys(initialPreys);
     setPredators(initialPredators);
-  }, [width, height, startingNumberOfPreys, startingNumberOfPredators]);
+  }, [
+    width,
+    height,
+    startingNumberOfPreys,
+    startingNumberOfPredators,
+    startingNumberOfPlantsRemaining,
+  ]);
 
   const onNextEpoch = useCallback(() => {
     const [newBoard, newPreys, newPredators] = getNextEpoch(
@@ -40,8 +48,10 @@ export const useInitSimulation = (
       parameters[6].value,
       parameters[7].value,
       parameters[8].value,
-      parameters[9].value
+      parameters[9].value,
+      parameters[10].value
     );
+    // console.log(newBoard);
     setBoard([...newBoard]);
     setPreys([...newPreys]);
     setPredators([...newPredators]);

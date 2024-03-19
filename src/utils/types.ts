@@ -23,7 +23,6 @@ export type Predator = {
 
 export type Plant = {
   type: CellType.Plant;
-  energy: number;
 };
 
 export type Parameter = {

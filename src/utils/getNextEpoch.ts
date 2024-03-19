@@ -1,6 +1,6 @@
 import { dispatch } from "../store/chartDataStore";
-import { getEmptyCell, getPredator, getPrey } from "./constructors";
-import { BoardType } from "./generateBoard";
+import { getEmptyCell, getPlant, getPredator, getPrey } from "./constructors";
+import { BoardType, getEmptyCellsMap, getRandomCell } from "./generateBoard";
 import { getNextCell, getRandomNextCell } from "./getNextCell";
 import { getRandomArrayValue } from "./getRandomArrayValue";
 import { CellType, Predator, Prey } from "./types";
@@ -14,8 +14,8 @@ const isEmptySpaceAround = (
   x2: number,
   y2: number
 ) => {
-  const width = board[0].length
-  const height = board.length
+  const width = board[0].length;
+  const height = board.length;
   const neighbours1 = VECTOR.map((i) =>
     VECTOR.map((j) => getNextCell(x1, y1, i, j, width, height))
   ).flat();
@@ -44,7 +44,8 @@ export const getNextEpoch = (
   chanceOfReproductionPrey = 0.15,
   chanceOfReproductionPredator = 0.8,
   preyReproductionCooldown = 4,
-  predatorReproductionCooldown = 4
+  predatorReproductionCooldown = 4,
+  numberOfPlantsRemaining = 0.02
 ) => {
   const height = board.length;
   const width = board[0].length;
@@ -54,6 +55,9 @@ export const getNextEpoch = (
   for (let prey of preys) {
     const [x, y] = prey;
     const preyObject = board[y][x] as Prey;
+    if (!preyObject.energy) {
+      console.log(preyObject);
+    }
     const newPreyObject = {
       ...preyObject,
       energy: preyObject.energy - energyPreyLostWalking,
@@ -95,6 +99,7 @@ export const getNextEpoch = (
       ) {
         continue;
       }
+
       newPreyObject.energy -= energyPreyLostReproducting;
       nextCellObject.energy -= energyPreyLostReproducting;
       newPreyObject.reproductionCooldown = preyReproductionCooldown;
@@ -114,6 +119,9 @@ export const getNextEpoch = (
   for (let predator of predators) {
     const [x, y] = predator;
     const predatorObject = board[y][x] as Predator;
+    if (!predatorObject.energy) {
+      console.log(predatorObject);
+    }
     const newPredatorObject = {
       ...predatorObject,
       energy: predatorObject.energy - energyPredatorLostWalking,
@@ -150,6 +158,7 @@ export const getNextEpoch = (
       ) {
         continue;
       }
+
       newPredatorObject.energy -= energyPredatorLostReproducting;
       nextCellObject.energy -= energyPredatorLostReproducting;
       newPredatorObject.reproductionCooldown = predatorReproductionCooldown;
@@ -159,7 +168,10 @@ export const getNextEpoch = (
         (newPredatorObject.effectiveness + nextCellObject.effectiveness) / 2 +
         0.01;
       const [newPredatorX, newPredatorY] = newPredatorsCords;
-      board[newPredatorY][newPredatorX] = getPredator(newPredatorEffectivenes, 30);
+      board[newPredatorY][newPredatorX] = getPredator(
+        newPredatorEffectivenes,
+        30
+      );
       newPredators.push([newPredatorX, newPredatorY]);
     }
     if (nextCellObject.type === CellType.Prey) {
@@ -180,6 +192,21 @@ export const getNextEpoch = (
       newPreys.splice(eatenPreyIndex, 1);
     }
   }
+
+  // const emptyCellsMap = getEmptyCellsMap(board);
+  // const emptyFields =
+  //   emptyCellsMap.size - newPreys.length - newPredators.length;
+  // const numberOfNewPlants = emptyFields * numberOfPlantsRemaining;
+  // for (let i = 0; i < numberOfNewPlants; i++) {
+  //   const [x, y] = getRandomCell(emptyCellsMap);
+
+  //   if (board[y][x].type === CellType.Empty) {
+  //     board[y][x] = getPlant();
+  //   } else if (board[y][x].type === CellType.Prey) {
+  //     const prey = board[y][x] as Prey;
+  //     prey.energy += energyPreyFromEating;
+  //   }
+  // }
 
   dispatch({
     type: "add",

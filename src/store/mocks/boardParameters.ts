@@ -27,4 +27,11 @@ export const parameters = [
     step: 0.01,
     value: 0.02,
   },
+  {
+    name: "Starting Number of Plants (of remaining fields)",
+    min: 0,
+    max: 1,
+    step: 0.01,
+    value: 0.02,
+  },
 ];

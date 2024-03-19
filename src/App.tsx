@@ -14,7 +14,8 @@ function App() {
     parameters[0].value,
     parameters[1].value,
     parameters[2].value,
-    parameters[3].value
+    parameters[3].value,
+    parameters[4].value
   );
   const [simulationRun, setSimulationRun] = useState(false);
 

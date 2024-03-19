@@ -14,7 +14,7 @@ export const Board: FC<BoardProps> = ({ board }) => {
       {board.map((rows, i) => (
         <Flex key={`row-${i}`}>
           {rows.map((cell, j) =>
-            cell.type != CellType.Empty ? (
+            cell.type !== CellType.Empty && cell.type !== CellType.Plant ? (
               <Cell
                 type={cell.type}
                 energy={cell?.energy}
