@@ -4,7 +4,7 @@ export const parameters = [
     min: 10,
     max: 40,
     step: 1,
-    value: 40,
+    value: 20,
   },
   {
     name: "Height",
@@ -18,14 +18,14 @@ export const parameters = [
     min: 0,
     max: 1,
     step: 0.01,
-    value: 0.2,
+    value: 0.25,
   },
   {
     name: "Starting Number of Predators",
     min: 0,
     max: 1,
     step: 0.01,
-    value: 0.14,
+    value: 0.15,
   },
   {
     name: "Starting Number of Plants (of remaining fields)",
