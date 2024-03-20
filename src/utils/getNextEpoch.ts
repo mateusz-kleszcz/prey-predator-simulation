@@ -55,9 +55,6 @@ export const getNextEpoch = (
   for (let prey of preys) {
     const [x, y] = prey;
     const preyObject = board[y][x] as Prey;
-    if (!preyObject.energy) {
-      console.log(preyObject);
-    }
     const newPreyObject = {
       ...preyObject,
       energy: preyObject.energy - energyPreyLostWalking,
@@ -70,7 +67,8 @@ export const getNextEpoch = (
     const [newX, newY] = getRandomNextCell(x, y, width, height);
     const nextCellObject = { ...board[newY][newX] };
     if (newX === x && newY === y) {
-      newPreys.push([newX, newY]);
+      board[y][x] = newPreyObject;
+      newPreys.push([x, y]);
       continue;
     }
     if (nextCellObject.type === CellType.Empty) {
@@ -87,6 +85,7 @@ export const getNextEpoch = (
       continue;
     }
     if (nextCellObject.type === CellType.Prey) {
+      board[y][x] = newPreyObject;
       newPreys.push([x, y]);
       const newPreyCords = isEmptySpaceAround(board, x, y, newX, newY);
       if (
@@ -110,18 +109,18 @@ export const getNextEpoch = (
       const [newPreyX, newPreyY] = newPreyCords;
       board[newPreyY][newPreyX] = getPrey(newPreyEscape);
       newPreys.push([newPreyX, newPreyY]);
+      continue;
     }
     if (nextCellObject.type === CellType.Predator) {
+      board[y][x] = newPreyObject;
       newPreys.push([x, y]);
+      continue;
     }
   }
 
   for (let predator of predators) {
     const [x, y] = predator;
     const predatorObject = board[y][x] as Predator;
-    if (!predatorObject.energy) {
-      console.log(predatorObject);
-    }
     const newPredatorObject = {
       ...predatorObject,
       energy: predatorObject.energy - energyPredatorLostWalking,
@@ -133,6 +132,7 @@ export const getNextEpoch = (
     const [newX, newY] = getRandomNextCell(x, y, width, height);
     const nextCellObject = { ...board[newY][newX] };
     if (newX === x && newY === y) {
+      board[newY][newX] = newPredatorObject;
       newPredators.push([newX, newY]);
       continue;
     }
@@ -146,6 +146,7 @@ export const getNextEpoch = (
       continue;
     }
     if (nextCellObject.type === CellType.Predator) {
+      board[y][x] = newPredatorObject;
       newPredators.push([x, y]);
       const newPredatorsCords = isEmptySpaceAround(board, x, y, newX, newY);
       if (
@@ -173,6 +174,7 @@ export const getNextEpoch = (
         30
       );
       newPredators.push([newPredatorX, newPredatorY]);
+      continue;
     }
     if (nextCellObject.type === CellType.Prey) {
       if (
@@ -190,6 +192,7 @@ export const getNextEpoch = (
         (prey) => prey[0] === newX && prey[1] === newY
       );
       newPreys.splice(eatenPreyIndex, 1);
+      continue;
     }
   }
 

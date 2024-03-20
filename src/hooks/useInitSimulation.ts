@@ -36,22 +36,11 @@ export const useInitSimulation = (
 
   const onNextEpoch = useCallback(() => {
     const [newBoard, newPreys, newPredators] = getNextEpoch(
-      [...board],
+      JSON.parse(JSON.stringify(board)),
       [...preys],
       [...predators],
-      parameters[0].value,
-      parameters[1].value,
-      parameters[2].value,
-      parameters[3].value,
-      parameters[4].value,
-      parameters[5].value,
-      parameters[6].value,
-      parameters[7].value,
-      parameters[8].value,
-      parameters[9].value,
-      parameters[10].value
+      ...parameters.map(parameter => parameter.value),
     );
-    // console.log(newBoard);
     setBoard([...newBoard]);
     setPreys([...newPreys]);
     setPredators([...newPredators]);
