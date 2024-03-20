@@ -8,6 +8,13 @@ const reducer = (
 ) => {
   const { type, index, value } = action;
   const newParameters = [...state.parameters];
+  if (index == 2 && value + newParameters[3].value >= 1) {
+    newParameters[3].value =
+      Math.round((newParameters[3].max - value) * 100) / 100;
+  } else if (index == 3 && value + newParameters[2].value >= 1) {
+    newParameters[2].value =
+      Math.round((newParameters[2].max - value) * 100) / 100;
+  }
   newParameters[index].value = value;
 
   switch (type) {

@@ -79,6 +79,9 @@ export const getNextEpoch = (
     }
     if (nextCellObject.type === CellType.Plant) {
       newPreyObject.energy += energyPreyFromEating;
+      if (newPreyObject.energy > 100) {
+        newPreyObject.energy = 100;
+      }
       board[newY][newX] = newPreyObject;
       board[y][x] = getEmptyCell();
       newPreys.push([newX, newY]);
@@ -91,8 +94,8 @@ export const getNextEpoch = (
       if (
         newPreyObject.reproductionCooldown !== 0 ||
         nextCellObject.reproductionCooldown !== 0 ||
-        newPreyObject.energy < energyPreyLostReproducting ||
-        nextCellObject.energy < energyPreyLostReproducting ||
+        newPreyObject.energy < energyPreyLostReproducting + 1 ||
+        nextCellObject.energy < energyPreyLostReproducting + 1 ||
         Math.random() > chanceOfReproductionPrey ||
         !newPreyCords
       ) {
@@ -152,8 +155,8 @@ export const getNextEpoch = (
       if (
         newPredatorObject.reproductionCooldown !== 0 ||
         nextCellObject.reproductionCooldown !== 0 ||
-        newPredatorObject.energy < energyPredatorLostReproducting ||
-        nextCellObject.energy < energyPredatorLostReproducting ||
+        newPredatorObject.energy < energyPredatorLostReproducting + 1 ||
+        nextCellObject.energy < energyPredatorLostReproducting + 1 ||
         Math.random() > chanceOfReproductionPredator ||
         !newPredatorsCords
       ) {
@@ -167,7 +170,7 @@ export const getNextEpoch = (
 
       const newPredatorEffectivenes =
         (newPredatorObject.effectiveness + nextCellObject.effectiveness) / 2 +
-        0.01;
+        0.02;
       const [newPredatorX, newPredatorY] = newPredatorsCords;
       board[newPredatorY][newPredatorX] = getPredator(
         newPredatorEffectivenes,
@@ -185,6 +188,9 @@ export const getNextEpoch = (
         continue;
       }
       newPredatorObject.energy += energyPredatorFromEating;
+      if (newPredatorObject.energy > 100) {
+        newPredatorObject.energy = 100;
+      }
       board[newY][newX] = newPredatorObject;
       board[y][x] = getEmptyCell();
       newPredators.push([newX, newY]);
@@ -196,20 +202,23 @@ export const getNextEpoch = (
     }
   }
 
-  // const emptyCellsMap = getEmptyCellsMap(board);
-  // const emptyFields =
-  //   emptyCellsMap.size - newPreys.length - newPredators.length;
-  // const numberOfNewPlants = emptyFields * numberOfPlantsRemaining;
-  // for (let i = 0; i < numberOfNewPlants; i++) {
-  //   const [x, y] = getRandomCell(emptyCellsMap);
+  const emptyCellsMap = getEmptyCellsMap(board);
+  const emptyFields =
+    emptyCellsMap.size - newPreys.length - newPredators.length;
+  const numberOfNewPlants = emptyFields * numberOfPlantsRemaining;
+  for (let i = 0; i < numberOfNewPlants; i++) {
+    const [x, y] = getRandomCell(emptyCellsMap);
 
-  //   if (board[y][x].type === CellType.Empty) {
-  //     board[y][x] = getPlant();
-  //   } else if (board[y][x].type === CellType.Prey) {
-  //     const prey = board[y][x] as Prey;
-  //     prey.energy += energyPreyFromEating;
-  //   }
-  // }
+    if (board[y][x].type === CellType.Empty) {
+      board[y][x] = getPlant();
+    } else if (board[y][x].type === CellType.Prey) {
+      const prey = board[y][x] as Prey;
+      prey.energy += energyPreyFromEating;
+      if (prey.energy > 100) {
+        prey.energy = 100;
+      }
+    }
+  }
 
   dispatch({
     type: "add",

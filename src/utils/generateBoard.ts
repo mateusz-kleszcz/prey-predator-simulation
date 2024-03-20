@@ -28,8 +28,10 @@ export const generateBoard = (
   const emptyCellsMap = getEmptyCellsMap(board);
   const preys = [];
   const predators = [];
-  const preysNumber = width * height * startingNumberOfPreys;
-  const predatorsNumber = width * height * startingNumberOfPredators;
+  const preysNumber = Math.floor(width * height * startingNumberOfPreys);
+  const predatorsNumber = Math.floor(
+    width * height * startingNumberOfPredators
+  );
 
   for (let i = 0; i < preysNumber; i++) {
     const [x, y] = getRandomCell(emptyCellsMap);
@@ -45,12 +47,14 @@ export const generateBoard = (
     emptyCellsMap.delete(`${x}-${y}`);
   }
 
-  // const plantsNumber = emptyCellsMap.size * startingNumberOfPlantsRemaining;
-  // for (let i = 0; i < plantsNumber; i++) {
-  //   const [x, y] = getRandomCell(emptyCellsMap);
-  //   board[y][x] = getPlant();
-  //   emptyCellsMap.delete(`${x}-${y}`);
-  // }
+  const plantsNumber = Math.floor(
+    emptyCellsMap.size * startingNumberOfPlantsRemaining
+  );
+  for (let i = 0; i < plantsNumber; i++) {
+    const [x, y] = getRandomCell(emptyCellsMap);
+    board[y][x] = getPlant();
+    emptyCellsMap.delete(`${x}-${y}`);
+  }
 
   return [board, preys, predators];
 };
