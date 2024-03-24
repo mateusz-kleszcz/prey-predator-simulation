@@ -18,20 +18,20 @@ export const parameters = [
     min: 0,
     max: 1,
     step: 0.01,
-    value: 0.25,
+    value: 0.3,
   },
   {
     name: "Starting Number of Predators",
     min: 0,
     max: 1,
     step: 0.01,
-    value: 0.15,
+    value: 0.2,
   },
   {
     name: "Starting Number of Plants (of remaining fields)",
     min: 0,
     max: 1,
     step: 0.01,
-    value: 0.02,
+    value: 0.1,
   },
 ];
