@@ -3,9 +3,9 @@ import { Cell, CellType, Plant, Predator, Prey } from "./types";
 export const getEmptyCell = (): Cell => ({ type: CellType.Empty });
 
 export const getPrey = (
-  initialPreyEscape = 0.1,
+  initialPreyEscape = 0.2,
   initialPreyEnergy = 100,
-  initialReproductionCooldown = 0
+  initialReproductionCooldown = 1
 ): Prey => ({
   type: CellType.Prey,
   energy: initialPreyEnergy,
@@ -14,9 +14,9 @@ export const getPrey = (
 });
 
 export const getPredator = (
-  initialPredatorEffectiveness = 0.8,
+  initialPredatorEffectiveness = 0.6,
   initialPredatorEnergy = 100,
-  initialReproductionCooldown = 0
+  initialReproductionCooldown = 1
 ): Predator => ({
   type: CellType.Predator,
   energy: initialPredatorEnergy,

@@ -20,7 +20,13 @@ export const generateBoard = (
   height = 20,
   startingNumberOfPreys = 0.1,
   startingNumberOfPredators = 0.02,
-  startingNumberOfPlantsRemaining = 0.02
+  startingNumberOfPlantsRemaining = 0.02,
+  initialPreyEscape = 0.2,
+  initialPredatorEffectiveness = 0.6,
+  initialPreyEnergy = 100,
+  initialPredatorEnergy = 100,
+  initialPreyReproductionCooldown = 1,
+  initialPredatorReproductionCooldown = 1
 ) => {
   const board = Array.from(Array(height), () =>
     Array(width).fill({ type: CellType.Empty })
@@ -35,14 +41,22 @@ export const generateBoard = (
 
   for (let i = 0; i < preysNumber; i++) {
     const [x, y] = getRandomCell(emptyCellsMap);
-    board[y][x] = getPrey();
+    board[y][x] = getPrey(
+      initialPreyEscape,
+      initialPreyEnergy,
+      initialPreyReproductionCooldown
+    );
     preys.push([x, y]);
     emptyCellsMap.delete(`${x}-${y}`);
   }
 
   for (let i = 0; i < predatorsNumber; i++) {
     const [x, y] = getRandomCell(emptyCellsMap);
-    board[y][x] = getPredator();
+    board[y][x] = getPredator(
+      initialPredatorEffectiveness,
+      initialPredatorEnergy,
+      initialPredatorReproductionCooldown
+    );
     predators.push([x, y]);
     emptyCellsMap.delete(`${x}-${y}`);
   }

@@ -20,7 +20,7 @@ export const SimulationPanel: FC<SimulationPanelProps> = ({ onNextEpoch }) => {
     if (simulate) {
       intervalRef.current = setInterval(() => {
         onNextEpoch();
-      }, 200);
+      }, 400);
     } else {
       if (intervalRef.current !== null) {
         clearInterval(intervalRef.current);

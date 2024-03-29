@@ -4,11 +4,17 @@ import { getNextEpoch } from "../utils/getNextEpoch";
 import { useStoreState } from "../store/simulationStore";
 
 export const useInitSimulation = (
-  width: number,
-  height: number,
-  startingNumberOfPreys: number,
-  startingNumberOfPredators: number,
-  startingNumberOfPlantsRemaining: number
+  width = 30,
+  height = 30,
+  startingNumberOfPreys = 0.3,
+  startingNumberOfPredators = 0.15,
+  startingNumberOfPlantsRemaining = 0.5,
+  initialPreyEscape = 0.2,
+  initialPredatorEffectiveness = 0.6,
+  initialPreyEnergy = 100,
+  initialPredatorEnergy = 100,
+  initialPreyReproductionCooldown = 1,
+  initialPredatorReproductionCooldown = 1
 ) => {
   const [board, setBoard] = useState<any[][]>([]);
   const [preys, setPreys] = useState<any[][]>([]);
@@ -21,7 +27,13 @@ export const useInitSimulation = (
       height,
       startingNumberOfPreys,
       startingNumberOfPredators,
-      startingNumberOfPlantsRemaining
+      startingNumberOfPlantsRemaining,
+      initialPreyEscape,
+      initialPredatorEffectiveness,
+      initialPreyEnergy,
+      initialPredatorEnergy,
+      initialPreyReproductionCooldown,
+      initialPredatorReproductionCooldown
     );
     setBoard(initialBoard);
     setPreys(initialPreys);
@@ -32,6 +44,12 @@ export const useInitSimulation = (
     startingNumberOfPreys,
     startingNumberOfPredators,
     startingNumberOfPlantsRemaining,
+    initialPreyEscape,
+    initialPredatorEffectiveness,
+    initialPreyEnergy,
+    initialPredatorEnergy,
+    initialPreyReproductionCooldown,
+    initialPredatorReproductionCooldown,
   ]);
 
   const onNextEpoch = useCallback(() => {
@@ -39,7 +57,7 @@ export const useInitSimulation = (
       JSON.parse(JSON.stringify(board)),
       [...preys],
       [...predators],
-      ...parameters.map(parameter => parameter.value),
+      ...parameters.map((parameter) => parameter.value)
     );
     setBoard([...newBoard]);
     setPreys([...newPreys]);

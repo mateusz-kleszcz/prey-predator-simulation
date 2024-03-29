@@ -6,16 +6,12 @@ import { SimulationPanel } from "./components/SimulationPanel";
 import { Visualization } from "./components/Visualization";
 import { useState } from "react";
 import { BoardConfiguration } from "./components/BoardConfiguration";
-import { useStoreState } from "./store/boardParameters";
+import { useStoreState } from "./store/boardStore";
 
 function App() {
   const parameters = useStoreState("parameters");
   const { board, onNextEpoch } = useInitSimulation(
-    parameters[0].value,
-    parameters[1].value,
-    parameters[2].value,
-    parameters[3].value,
-    parameters[4].value
+    ...parameters.map((parameter) => parameter.value)
   );
   const [simulationRun, setSimulationRun] = useState(false);
 
