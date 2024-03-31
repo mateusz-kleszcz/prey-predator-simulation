@@ -4,14 +4,14 @@ export const parameters = [
     min: 1,
     max: 20,
     step: 1,
-    value: 3,
+    value: 4,
   },
   {
     name: "Energy Predator Loses on Walking",
     min: 1,
     max: 20,
     step: 1,
-    value: 4,
+    value: 5,
   },
   {
     name: "Energy Prey Loses on Reproduction",
@@ -40,6 +40,13 @@ export const parameters = [
     max: 100,
     step: 1,
     value: 100,
+  },
+  {
+    name: "Predator Gets Hungry Below",
+    min: 50,
+    max: 100,
+    step: 1,
+    value: 70,
   },
   {
     name: "Chance of Reproduction for Prey",
