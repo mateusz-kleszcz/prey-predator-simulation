@@ -4,10 +4,17 @@ import { getNextEpoch } from "../utils/getNextEpoch";
 import { useStoreState } from "../store/simulationStore";
 
 export const useInitSimulation = (
-  width: number,
-  height: number,
-  startingNumberOfPreys: number,
-  startingNumberOfPredators: number
+  width = 30,
+  height = 30,
+  startingNumberOfPreys = 0.3,
+  startingNumberOfPredators = 0.15,
+  startingNumberOfPlantsRemaining = 0.5,
+  initialPreyEscape = 0.2,
+  initialPredatorEffectiveness = 0.6,
+  initialPreyEnergy = 100,
+  initialPredatorEnergy = 100,
+  initialPreyReproductionCooldown = 1,
+  initialPredatorReproductionCooldown = 1
 ) => {
   const [board, setBoard] = useState<any[][]>([]);
   const [preys, setPreys] = useState<any[][]>([]);
@@ -19,28 +26,38 @@ export const useInitSimulation = (
       width,
       height,
       startingNumberOfPreys,
-      startingNumberOfPredators
+      startingNumberOfPredators,
+      startingNumberOfPlantsRemaining,
+      initialPreyEscape,
+      initialPredatorEffectiveness,
+      initialPreyEnergy,
+      initialPredatorEnergy,
+      initialPreyReproductionCooldown,
+      initialPredatorReproductionCooldown
     );
     setBoard(initialBoard);
     setPreys(initialPreys);
     setPredators(initialPredators);
-  }, [width, height, startingNumberOfPreys, startingNumberOfPredators]);
+  }, [
+    width,
+    height,
+    startingNumberOfPreys,
+    startingNumberOfPredators,
+    startingNumberOfPlantsRemaining,
+    initialPreyEscape,
+    initialPredatorEffectiveness,
+    initialPreyEnergy,
+    initialPredatorEnergy,
+    initialPreyReproductionCooldown,
+    initialPredatorReproductionCooldown,
+  ]);
 
   const onNextEpoch = useCallback(() => {
     const [newBoard, newPreys, newPredators] = getNextEpoch(
-      [...board],
+      JSON.parse(JSON.stringify(board)),
       [...preys],
       [...predators],
-      parameters[0].value,
-      parameters[1].value,
-      parameters[2].value,
-      parameters[3].value,
-      parameters[4].value,
-      parameters[5].value,
-      parameters[6].value,
-      parameters[7].value,
-      parameters[8].value,
-      parameters[9].value
+      ...parameters.map((parameter) => parameter.value)
     );
     setBoard([...newBoard]);
     setPreys([...newPreys]);

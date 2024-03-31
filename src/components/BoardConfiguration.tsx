@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { dispatch, useStoreState } from "../store/boardParameters";
+import { dispatch, useStoreState } from "../store/boardStore";
 import { Parameters } from "./Parameters";
 import { Button, Flex } from "@chakra-ui/react";
 
@@ -13,9 +13,11 @@ export const BoardConfiguration: FC<BoardConfigurationProps> = ({
   const parameters = useStoreState("parameters");
 
   return (
-    <Flex width="50%" flexDirection="column" padding={10} gap={5}>
+    <Flex width="50%" flexDirection="column" padding={2} gap={5}>
       <Parameters parameters={parameters} dispatch={dispatch} />
-      <Button onClick={simulateClick}>Build</Button>
+      <Button colorScheme="teal" onClick={simulateClick}>
+        Build
+      </Button>
     </Flex>
   );
 };
