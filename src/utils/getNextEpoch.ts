@@ -41,6 +41,7 @@ export const getNextEpoch = (
   energyPredatorLostReproducting = 20,
   energyPreyFromEating = 50,
   energyPredatorFromEating = 80,
+  predatorHungry = 80,
   chanceOfReproductionPrey = 0.15,
   chanceOfReproductionPredator = 0.8,
   preyReproductionCooldown = 4,
@@ -213,7 +214,8 @@ export const getNextEpoch = (
     if (nextCellObject.type === CellType.Prey) {
       if (
         Math.random() >
-        newPredatorObject.effectiveness - nextCellObject.escape
+          newPredatorObject.effectiveness - nextCellObject.escape ||
+        newPredatorObject.energy > predatorHungry
       ) {
         const escapePreyIndex = newPreys.findIndex(
           (prey) => prey[0] === newX && prey[1] === newY
